@@ -1,0 +1,141 @@
+
+
+
+
+type Controller {
+  mac: ID!
+  segment: String
+  city: String
+  power: String
+  serial: String
+  imei: String
+  imsi: String
+  ccid: String
+  phone: String
+  connected: Boolean!
+  master: Boolean
+  tlevel: Int
+  rng: Int
+  smac: String
+  dir: Int
+  nid: Int
+  group: Int
+  level: Int
+  mrssi: Int
+  rssi: Int
+  devt: Int
+  devm: Int
+}
+
+enum LampStatus {
+  ON
+  OFF
+  BROKEN
+  UNKNOWN
+}
+
+type SimpleProfile {
+  d1: Int!
+  p1: Int!
+  d2: Int!
+  p2: Int!
+}
+
+type ComplexProfile {
+  pwm0: Int!
+  time1: String!
+  pwm1: Int!
+  time2: String!
+  pwm2: Int!
+  time3: String!
+  pwm3: Int!
+  time4: String!
+  pwm4: Int!
+}
+
+type Lamp {
+  mac: ID!
+  source: String!
+  segment: String
+  city: String
+  dir: Int!
+  level: Int!
+  nid: Int
+  group: Int!
+  smac: String!
+  rssi: Int!
+  devt: Int!
+  devm: Int!
+  eblk: Int
+  cycles: String
+  runh: Int
+  nvsc: Int
+  lpwm: Int
+  cpwm: Int
+  mrssi: Int!
+  rfch: Int
+  rfpwr: Int
+  pwm: Int
+  pwmct: Int
+  pow: Int
+  lux: Int
+  temp: Int
+  energy: Int
+  rng: Int
+  tlevel: Int!
+  date: Timestamp
+  lat: Float
+  lng: Float
+  val: Int
+  rise: String
+  set: String
+  id: Int
+  scdtm: Int
+  rfps: Int
+  twil: Int
+  status: LampStatus!
+  received: Timestamp!
+  simpleProfiles: [SimpleProfile]!
+  complexProfiles: [ComplexProfile]!
+}
+
+type Query {
+  cities: [City!]!
+  segments(city: String): [Segment!]!
+  controllers(city: String): [Controller!]!
+  controllersForSegment(city: String!, segment: String!): [Controller!]!
+  controller(mac: String!): Controller
+  lamps(city: String): [Lamp!]!
+  lampsForSegment(city: String!, segment: String!): [Lamp!]!
+  lamp(mac: String!): Lamp
+  lampNearByDistance(lat: Float!, lng: Float!, maxMeters: Int!): Lamp
+  lampsNearByCount(lat: Float!, lng: Float!, maxCount: Int!): [Lamp!]!
+  requestComplexProfile(mac: String!, id: Int!): String!
+}
+
+type Mutation {
+  setDimming(mac: String!, value: Int!): String!
+  selectProfile(mac: String!, id: Int!): String!
+  setSimpleProfile(mac: String!, id: Int!, profile: SimpleProfileInput!): String!
+  setComplexProfile(mac: String!, id: Int!, profile: ComplexProfileInput!): String!
+}
+
+input SimpleProfileInput {
+  d1: Int!
+  p1: Int!
+  d2: Int!
+  p2: Int!
+}
+
+input ComplexProfileInput {
+  pwm0: Int!
+  time1: String!
+  pwm1: Int!
+  time2: String!
+  pwm2: Int!
+  time3: String!
+  pwm3: Int!
+  time4: String!
+  pwm4: Int!
+}
+
